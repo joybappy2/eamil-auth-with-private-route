@@ -2,3 +2,8 @@
 @plugin "daisyui" {
   themes: night --default;
 }
+
+nav a.active {
+  color: burlywood;
+  text-decoration: overline;
+}
