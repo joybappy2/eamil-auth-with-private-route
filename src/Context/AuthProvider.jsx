@@ -10,33 +10,26 @@ import { auth } from "../Firebase/firebase.init";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const createUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => console.log(result.user))
-      .catch((error) => console.log(error));
+    return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const signInUser = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => console.log(error));
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setLoading(false);
     });
   }, []);
 
   const signOutUser = () => {
-    return signOut(auth)
-      .then(() => {
-        console.log("signout successful");
-      })
-      .catch((error) => console.log(error));
+    setLoading(true);
+    return signOut(auth);
   };
 
   const authInfo = {
@@ -44,6 +37,8 @@ const AuthProvider = ({ children }) => {
     signInUser,
     user,
     signOutUser,
+    loading,
+    setLoading,
   };
   return <AuthContext value={authInfo}>{children}</AuthContext>;
 };

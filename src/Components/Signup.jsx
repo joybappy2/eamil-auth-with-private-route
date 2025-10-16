@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
 
 const Signup = () => {
-  const {createUser}= use(AuthContext);
+  const { createUser } = use(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,6 +11,8 @@ const Signup = () => {
     const password = e.target.password.value;
 
     createUser(email, password)
+      .then((result) => console.log(result.user))
+      .catch((error) => console.log(error));
   };
 
   return (

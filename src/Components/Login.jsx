@@ -1,17 +1,27 @@
 import React, { use } from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
 
 const Login = () => {
   const { signInUser } = use(AuthContext);
 
-  const handleSignIn = (e) =>{
-    e.preventDefault()
-    const email = e.target.email.value
-    const password = e.target.password.value
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  console.log(location);
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
 
     signInUser(email, password)
-  }
+      .then((result) => {
+        console.log("logged in successfully", result.user)
+        navigate(location.state || "/");
+      })
+      .catch((error) => console.log(error));
+  };
   return (
     <>
       <div className="flex flex-col justify-center min-h-screen items-center">
@@ -21,7 +31,12 @@ const Login = () => {
             <form onSubmit={handleSignIn}>
               <fieldset className="fieldset">
                 <label className="label">Email</label>
-                <input type="email" className="input" placeholder="Email" name="email" />
+                <input
+                  type="email"
+                  className="input"
+                  placeholder="Email"
+                  name="email"
+                />
                 <label className="label">Password</label>
                 <input
                   type="password"

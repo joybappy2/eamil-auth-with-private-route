@@ -3,18 +3,23 @@ import { Link, NavLink } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
 
 const Navbar = () => {
-  const {user, signOutUser} = use(AuthContext)
-  console.log('current user: ', user);
+  const { user, signOutUser } = use(AuthContext);
 
-  const handleSignOut = () =>{
+  const handleSignOut = () => {
     signOutUser()
-  }
+      .then(() => {
+        console.log("signout successful");
+      })
+      .catch((error) => console.log(error));
+  };
 
   const links = (
     <>
       <NavLink to="/">Home</NavLink>
       <NavLink to="/login">Login</NavLink>
       <NavLink to="/signup">SignUp</NavLink>
+      <NavLink to="/orders">Orders</NavLink>
+      <NavLink to="/">Home2</NavLink>
     </>
   );
   return (
@@ -61,12 +66,11 @@ const Navbar = () => {
           </div>
           <div className="navbar-end ">
             <div className="cursor-pointer btn bg-[#d89056a2]">
-            {
-              user? 
-              <a onClick={handleSignOut}>SignOut</a>
-              :
-              <Link to='/login'>SignIn</Link>
-            }
+              {user ? (
+                <a onClick={handleSignOut}>SignOut</a>
+              ) : (
+                <Link to="/login">SignIn</Link>
+              )}
             </div>
           </div>
         </div>
